@@ -18,13 +18,6 @@ public class Emprestimo {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-//	@ManyToMany
-//	@JoinTable(
-//			name = "emprestimo_livro", 
-//			joinColumns = @JoinColumn(name = "emprestimo_id", referencedColumnName = "id"), 
-//			inverseJoinColumns = @JoinColumn(name = "livro_id", referencedColumnName = "id")
-//	)
-
 	@OneToMany(mappedBy = "emprestimo")
 	private List<EmprestimoItem> emprestimoItems;
 

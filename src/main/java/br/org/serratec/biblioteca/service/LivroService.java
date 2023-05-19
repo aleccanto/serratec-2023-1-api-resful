@@ -1,10 +1,12 @@
 package br.org.serratec.biblioteca.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.org.serratec.biblioteca.dto.LivroDTO;
 import br.org.serratec.biblioteca.entity.Livro;
 import br.org.serratec.biblioteca.repository.LivroRepository;
 
@@ -14,32 +16,27 @@ public class LivroService {
 	@Autowired
 	private LivroRepository repository;
 
-	public List<Livro> findAll() {
-		return repository.findAll();
+	public List<LivroDTO> findAll() {
+
+		return repository.findAll().stream().map(item -> new LivroDTO(item)).toList();
 	}
 
-	public Livro findById(Long id) {
-		return repository.findById(id).orElse(null);
+	public LivroDTO findById(Long id) {
+		Optional<Livro> livro = repository.findById(id);
+		if (livro.isPresent()) {
+			return new LivroDTO(livro.get());
+		}
+		return null;
 	}
 
-	public Livro create(Livro livro) {
-		return repository.save(livro);
+	public LivroDTO create(LivroDTO livro) {
+		Livro livroEntity = new Livro();
+		livroEntity.setTitulo(livro.getTitulo());
+		return new LivroDTO(repository.save(livroEntity));
 	}
 
 	public Livro update(Long id, Livro livro) {
-		Livro livroEntity = this.findById(id);
-		updateEntity(livro, livroEntity);
-		return livroEntity;
-	}
-
-	public void delete(Long id) {
-		Livro livro = findById(id);
-		if (livro != null) {
-			repository.deleteById(id);
-		}
-	}
-
-	private void updateEntity(Livro livro, Livro livroEntity) {
+		Livro livroEntity = null;
 		if (livroEntity != null) {
 			if (livro.getEditora() != null) {
 				livroEntity.setEditora(livro.getEditora());
@@ -48,5 +45,11 @@ public class LivroService {
 				livroEntity.setEmprestimoItems(livro.getEmprestimoItems());
 			}
 		}
+		return livroEntity;
 	}
+
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+
 }

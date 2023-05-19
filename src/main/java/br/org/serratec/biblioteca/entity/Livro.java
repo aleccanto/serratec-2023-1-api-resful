@@ -15,9 +15,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "livro")
 public class Livro {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	private String titulo;
 
 	@ManyToOne
 	@JoinColumn(name = "editora_id")
@@ -32,6 +35,14 @@ public class Livro {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public Editora getEditora() {

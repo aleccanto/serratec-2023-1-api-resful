@@ -12,9 +12,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "editora")
 public class Editora {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	private String nome;
 
 	@OneToMany(mappedBy = "editora")
 	private List<Livro> livros;
@@ -25,6 +28,14 @@ public class Editora {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public List<Livro> getLivros() {
